@@ -7,5 +7,3 @@ print(rs)
 def c(r):
     return 1/(1-(rs/(r)))
 
-r = 1000000000000000000000000000
-print(c(r))
