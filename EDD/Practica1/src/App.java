@@ -28,7 +28,7 @@ public class App{
       RegisterService registerService = new RegisterService();
 
       System.out.println("Bienvenido al inicio de sesion");
-      //try{
+      try{
 
         System.out.print("Por favor ingrese su id -> ");
         int id = sc.nextInt();
@@ -220,13 +220,13 @@ public class App{
 
         }
         
-      /*}catch(Exception e){
+      }catch(Exception e){
         
         System.out.println(e);
         System.out.println("ERROR: INGRESE MAS TARDE");
          
 
-      }*/
+      }
       
      /*
       NodoDoble<Usuario> first  = ur.loadAll().getHead();
