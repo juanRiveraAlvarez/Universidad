@@ -17,11 +17,11 @@ class Programa2{
         for(int i = 0; i<data.length(); i++){
           if(data.charAt(i) == ' ' || i == 0){
             if(data.length() - 1 - i >= 2){
-              if(data.charAt(i+1) == 'e' && data.charAt(i+2) == 'n'){
+              if(data.charAt(i+1) == 'n' && data.charAt(i+2) == 'o'){
                 if(data.length() - 1 - i == 2 || data.charAt(i+3) == ' '){
                   acum = acum + 1;
                 }
-              }else if(i == 0 && data.charAt(i) == 'e' && data.charAt(i+1) == 'n' && data.charAt(i+2) == ' '){
+              }else if(i == 0 && data.charAt(i) == 'n' && data.charAt(i+1) == 'o' && data.charAt(i+2) == ' '){
                   acum = acum + 1;
               }
             }

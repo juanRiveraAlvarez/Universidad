@@ -13,6 +13,7 @@ public class MainOrdenadoAgenda {
         O.agregarUsuario(u4);
         O.agregarUsuario(u5);
         O.agregarUsuario(u6);
+        O.mostrar();
         O.ordenar();
         O.mostrar();
     }

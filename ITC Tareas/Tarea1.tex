@@ -1,0 +1,815 @@
+\documentclass[9pt,tikz,border=2mm]{article}
+
+\usepackage{amsmath} % Advanced math typesetting
+\usepackage[utf8]{inputenc} % Unicode support (Umlauts etc.)
+\usepackage[ngerman]{babel} % Change hyphenation rules
+\usepackage{hyperref} % Add a link to your document
+\usepackage{graphicx} % Add pictures to your document
+\usepackage{listings} % Source code formatting and highlighting
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{amssymb}
+
+\usetikzlibrary{graphs} % Para funcionalidades de grafos
+
+\title{Tarea 1: Introducción a la Teoría de la Computación}
+\author{
+    Juan Pablo Rivera Alvarez \\
+    \texttt{jriveraal@unal.edu.co} \\
+    \and
+    Gabriel Antonio Serrano Pineda \\
+    \texttt{gserranop@unal.edu.co}
+}
+\date{2024}
+
+\maketitle
+\newpage
+
+\begin{document}
+
+    \begin{enumerate}
+        \setcounter{enumi}{0} % Esto inicializa el contador, si fuera necesario
+        \item[1.] \textbf{Number of occurrences of a symbol in a string}
+    
+For any symbol a and any string w, let $\#(a, w)$ denote the number of occurrences of a in w. For example, $\#(A, BANANA) = 3$ and $\#(N, BANANA) = 2$.
+
+        \begin{enumerate}
+            \item[(a)] Give a formal recursive definition of the function $\# \sum \times \sum^* \to \mathbb{N}$
+            \textbf{Solution}
+            
+             \[\#(a,w)
+                \begin{cases}
+                    0 & \text{if } w=\epsilon \\
+                    1 + \#(a,x) & \text{if } w=ax\\
+                    0 + \#(a,x) & \text{if } w=bx \wedge b \neq a\\
+                \end{cases}
+            \]\newline
+            
+            \item[(b)] Prove that $\#(a,xy) = \#(a,x) + \#(a,y)$ for every symbol a and all strings x and y. Your proof must rely on both your answer to part (a) and the formal recursive definition of string concatenation.
+            
+            \textbf{Solution}\newline
+
+            Base case $x=\epsilon$\newline
+            
+            $\#(a,xy) = \#(a,\epsilon y) = \#(a,y) = 0 + \#(a,y) \iff \text{(by definition)} \newline  \#(a,\epsilon) + \#(a,y) \iff \text{(x = $\epsilon$)} \newline  \#(a,x) + \#(a,y)$\newline
+
+            Suppose that $\forall w \in \sum^* \text{is true that } \#(a,wy) = \#(a,w) + \#(a,y)$\newline
+            
+           
+            Let $z=bw$ with $b \in \sum,  \text{ as } \#(a,w) = \#(a,bwy)$, we can take two cases:\newline
+            \begin{enumerate}
+                \item[(i)] $b = a$:\newline $\text{ (by definition of \#) } \#(a,awy) = 1 + \#(a,wy) \newline \text{ (by hypothesis) } 1 + \#(a,wy) = 1 + \#(a,w) + \#(a,y) \newline \text{ (as $z=bw$, by definition of $\#$) } 1 + \#(a,w) + \#(a,y) = \#(a,z) + \#(a,y)$\newline
+                \item[(ii)] $b \neq a$:\newline $\text{ (by definition of \#) } \#(a,bwy) = 0 + \#(a,wy) \newline \text{ (by hypothesis) } 0 + \#(a,wy) = 0 + \#(a,w) + \#(a,y) \newline \text{ (as $z=bw$, by definition of $\#$) } 0 + \#(a,w) + \#(a,y) = \#(a,z) + \#(a,y)$\newline
+            \end{enumerate}
+            $\square$
+
+             \item[(c)] Prove the following identity for all alphabets $\sum$ and all strings $w \in \sum^*$:
+             
+             \textbf{Solution:}
+
+
+             \text{Base Case:} \( w = \epsilon \), we have:
+
+            \[
+                |w| = 0
+            \]
+
+            By definition, \( \#(a, \epsilon) = 0 \) for every \( a \in \Sigma \). Therefore, the summation:
+
+            \[
+                \sum_{a \in \Sigma} \#(a, \epsilon) = 0
+            \]
+
+            Thus, the statement holds for the base case \( w = \epsilon \).
+
+            Suppose that the statement is true for a string \( w \) with length \( |w| \)
+
+            \[
+            |w| = \sum_{a \in \Sigma} \#(a, w)
+            \]
+
+            Now consider a string \( z = bw \), where \( b \in \Sigma \). By the definition of the length of a string, we have:
+
+            \[
+                |z| = 1 + |w|
+            \]
+
+            Now, consider the sum:
+
+            \[
+                \sum_{a \in \Sigma} \#(a, z)
+            \]
+
+            This can be rewritten as:
+
+            \[
+                \sum_{a \in \Sigma} \#(a, bw)
+            \]
+
+            By the definition of \( \#(a, bw) \), we can split the sum into two parts:
+
+            - The number of occurrences of \( a \) in \( w \).
+            - If \( a = b \), then add 1 because \( b \) is at the beginning of the string \( z \).
+
+            Thus:
+
+            \[
+                \#(a, bw) = \begin{cases} 
+                \#(a, w) + 1 & \text{if } a = b \\
+                \#(a, w) & \text{if } a \neq b 
+                \end{cases}
+                \]
+
+            Therefore, the sum becomes:
+
+            \[
+                \sum_{a \in \Sigma} \#(a, bw) = 1 + \sum_{a \in \Sigma} \#(a, w)
+            \]
+
+            This is exactly \( 1 + |w| \), which is the length of \( z \). Therefore, the inductive step holds, and the             statement is true for all strings \( w \in \Sigma^* \).
+
+            $\square$
+
+        \item[2.]\textbf{\textit{String reversal}}
+
+        The reversal $w^R$ of a string $w$ is defined recursively as follows:
+
+        \[w^R :=
+            \begin{cases}
+                \epsilon & \text{if } w=\epsilon\\
+                x^Ra & \text{if } w=ax
+            \end{cases}
+        \]
+            \begin{enumerate}
+                \item[(a)]Prove that $(w^R)^R = w$ for every string w.
+
+                \textbf{Solution:}
+
+                Base case $w=\epsilon$
+
+                \[
+                    \epsilon = \epsilon^R = (\epsilon^R)^R \text{  (By definition)}
+                \]
+
+                Suppose that $\forall w \in \sum^*$ is true that $(w^R)^R = w$.\newline
+
+                Let $x = aw$ with $a \in \sum$:
+
+                \[ 
+                    (x^R)^R = ((aw)^R)^R = (w^Ra)^R = a(w^R)^R = aw = x
+                \]
+                $\square$\newline
+
+                \item[(b)] Prove that $|w^R|=|w|$ for every string w. 
+                
+                \textbf{Solution}
+
+                Base case w = $\epsilon$
+
+                    \[|w| = |\epsilon| = 0 = |\epsilon| = |\epsilon^R| = |w^R|\]\newline
+
+                Suppose that $\forall w \in \sum^*$ is true that $|w| = |w^R|$\newline
+
+                Let $x=aw$ with $a \in \sum$:
+
+                \[|x| = |aw| = 1 + |w| = 1 + |w^R| = |w^R| + 1 = |w^Ra| = |x^R|\]$\square$\newline
+
+                \item[(c)] Prove that  $(wx)^R = x^Rw^R$ for all strings $w$ and $x$
+                
+                \textbf{Solution:}
+
+                Base case $w=\epsilon$: 
+
+                \[(wx)^R = (\epsilon x)^R = x^R = x^R\epsilon = x^R\epsilon^R\]
+
+                Suppose that $\forall w \in \sum^*$ is true that $(wx)^R = x^Rw^R$.\newline
+
+                Let $z=aw$ with $a \in \sum$:
+
+                \[ (zx)^R = (awx)^R = (wx)^Ra = x^Rw^Ra = x^Rx^R\]$\square$\newline
+
+                \item[(d)] Prove that  $\#(a,w^R) = \#(a,w)$ for all strings $w$ and every symbol $a$.
+                
+                \textbf{Solution:}
+
+                Base case $w=\epsilon$: 
+
+                \[\#(a,\epsilon^R) = \#(a,\epsilon) = 0\]
+
+                Suppose that $\forall w \in \sum^*$ is true that $\#(a,w^R) = \#(a,w)$.\newline
+
+                Let $z=aw$ with $a \in \sum$, we have two cases:\newline
+
+                $(b=a):$
+                \[\#(a,z) = \#(a,bw) = 1 + \#(a,w) = 1+ \#(a,w^R) = \#(a,w^Rb) = \#(a,z^R)\]
+                
+                $(b\neq a):$
+                \[\#(a,z) = \#(a,bw) = 0 + \#(a,w) = 0 + \#(a,w^R) = \#(a,w^Rb) = \#(a,z^R)\]$\square$
+                
+                
+            \end{enumerate}
+
+        \item[3.] \textbf{\textit{Balanced Strings}}
+
+        \begin{enumerate}
+    \item[(a)] \textbf{Prove that the following three properties of strings are in fact identical:}
+    \begin{enumerate}
+        \item A string \( w \in \{0, 1\}^* \) is balanced if it satisfies one of the following conditions:
+            \begin{itemize}
+                \item \( w = \epsilon \)
+                \item \( w = 0x1 \) for some balanced string \( x \)
+                \item \( w = xy \) for some balanced strings \( x \) and \( y \)
+            \end{itemize}
+        \item A string \( w \in \{0, 1\}^* \) is erasable if it satisfies one of the following conditions:
+            \begin{itemize}
+                \item \( w = \epsilon \)
+                \item \( w = x01y \) for some strings \( x \) and \( y \) such that \( xy \) is erasable.
+            \end{itemize}
+        \item A string \( w \in \{0, 1\}^* \) is conservative if it satisfies both of the following conditions:
+            \begin{itemize}
+                \item \( w \) has an equal number of 0’s and 1’s
+                \item No prefix of \( w \) has more 1’s than 0’s
+            \end{itemize}
+    \end{enumerate}
+
+    \textbf{Proof by Induction:}
+
+    \begin{enumerate}
+        \item \textbf{Induction on Balanced Strings:}
+        
+        \textbf{Claim:} If \( w \) is balanced, then \( w \) is erasable.
+        
+        \textbf{Base Case:} \( w = \epsilon \). This trivially satisfies the condition for both balanced and erasable strings.
+        
+        \textbf{Inductive Hypothesis:} Assume that for some balanced string \( x \), it is erasable. We now prove that if \( w = 0x1 \), then \( w \) is erasable.
+        
+        \textbf{Inductive Step:} If \( w = 0x1 \), by the inductive hypothesis, \( x \) is erasable. Since \( x \) is erasable, we can write \( w = 0x1 \) and remove the 0 and the 1, leaving an erasable string. Therefore, \( w \) is erasable.
+        
+        By induction, we have proven that if \( w \) is balanced, then \( w \) is erasable.
+
+        \item \textbf{Induction on Erasable Strings:}
+        
+        \textbf{Claim:} If \( w \) is erasable, then \( w \) is conservative.
+        
+        \textbf{Base Case:} \( w = \epsilon \). This trivially satisfies the condition for both erasable and conservative strings.
+        
+        \textbf{Inductive Hypothesis:} Assume that for some erasable string \( w = x01y \), the string is conservative. We now prove that \( w \) is conservative.
+        
+        \textbf{Inductive Step:} Let \( w = x01y \), where \( x \) and \( y \) are arbitrary strings, and \( xy \) is erasable. Since \( w = x01y \), the number of 0's and 1's in \( w \) is balanced due to the 0 and 1 in the middle. Additionally, no prefix of \( w \) has more 1's than 0's, because \( x \) and \( y \) are both erasable, and thus cannot violate this property. Therefore, \( w \) is conservative.
+        
+        By induction, we have proven that if \( w \) is erasable, then \( w \) is conservative.
+
+        \item \textbf{Induction on Conservative Strings:}
+        
+        \textbf{Claim:} If \( w \) is conservative, then \( w \) is balanced.
+        
+        \textbf{Base Case:} \( w = \epsilon \). This trivially satisfies the condition for both conservative and balanced strings.
+        
+        \textbf{Inductive Hypothesis:} Assume that for some conservative string \( w = x01y \), where \( x \) and \( y \) are conservative strings, the string \( w \) is balanced. We now prove that \( w \) is balanced.
+        
+        \textbf{Inductive Step:} Let \( w = x01y \), where \( x \) and \( y \) are conservative. Since \( x \) and \( y \) have an equal number of 0's and 1's, the number of 0's and 1's in \( w \) is equal, and no prefix of \( w \) has more 1's than 0's. Therefore, \( w \) is balanced.
+        
+        By induction, we have proven that if \( w \) is conservative, then \( w \) is balanced.
+
+    \end{enumerate}
+
+    Therefore, by transitivity, we have shown that the three properties (balanced, erasable, and conservative) are equivalent.
+
+\end{enumerate}
+            
+        
+        \item[7.]\textbf{\textit{Problem 1.37 from [Sipser]}}
+        
+            Let 
+            \[
+                \text{$\sum$} = \{
+                \begin{bmatrix}
+                    0 \\
+                    0 \\
+                    0
+                \end{bmatrix},
+                \begin{bmatrix}
+                    0 \\
+                    0 \\
+                    1
+                \end{bmatrix},
+                \begin{bmatrix}
+                    0 \\
+                    1 \\
+                    0
+                \end{bmatrix},...,
+                \begin{bmatrix}
+                    1 \\
+                    1 \\
+                    1
+                \end{bmatrix}
+                \}
+            \]
+
+            $\sum$ Contains all size 3 columns of 0's and 1's. A string of symbols in $\sum$ gives three rows of 0's and 1's.
+
+            Consider each row to be a binary number an let
+
+            \[B = \{w \in \sum^* | \text{the bottom row of w is the sum of the top two rows}\}\]
+        
+            For example,
+
+            \[
+                \begin{bmatrix}
+                    0\\
+                    0\\
+                    1
+                \end{bmatrix}
+                \begin{bmatrix}
+                    0\\
+                    0\\
+                    1
+                \end{bmatrix}
+                \begin{bmatrix}
+                    0\\
+                    0\\
+                    1
+                \end{bmatrix}
+                \in B,\text{  But }
+                \begin{bmatrix}
+                    0\\
+                    0\\
+                    1
+                \end{bmatrix}
+                \begin{bmatrix}
+                    1\\
+                    0\\
+                    1
+                \end{bmatrix}
+                \notin B
+            \]
+
+            Show that B es Regular
+
+            \textbf{Solution:}
+
+            Already know that "Regular language are closed under reversal", then, if prove that $B^R$ is regular, then $B$ in regular.
+
+            So, first have to prove that $B^R$ is regular.
+
+            Let $M$be the automaton that recognize $B^R$:
+                \[ M = (Q,\sum,\delta,q_0,F), \text{Where}\]
+                \[ Q=\{c_1,c_2\}\]
+                \[ \sum=\{
+                    \begin{bmatrix}
+                        0\\
+                        0\\
+                        0
+                    \end{bmatrix},
+                    \begin{bmatrix}
+                        0\\
+                        0\\
+                        1
+                    \end{bmatrix},...,
+                    \begin{bmatrix}
+                        1\\
+                        1\\
+                        1
+                    \end{bmatrix}
+                \}\]
+                \[q_0 = c_0\]
+                \[F = \{c_0\}\]
+
+                
+                \[\delta(c_0,a)=
+                    \begin{cases}
+                        c_0 & \text{if } a =\begin{bmatrix}
+                            0\\
+                            0\\
+                            0
+                        \end{bmatrix},
+                        \begin{bmatrix}
+                            0\\
+                            1\\
+                            1
+                        \end{bmatrix} \text{ or }
+                        \begin{bmatrix}
+                            1\\
+                            0\\
+                            1
+                        \end{bmatrix}\\
+                        c_1 & \text{if } a =\begin{bmatrix}
+                            1\\
+                            1\\
+                            0
+                        \end{bmatrix},
+                    \end{cases}
+                \]
+
+                \[\delta(c_1,a)=
+                    \begin{cases}
+                        c_1 & \text{if } a =\begin{bmatrix}
+                            1\\
+                            1\\
+                            1
+                        \end{bmatrix},
+                        \begin{bmatrix}
+                            0\\
+                            1\\
+                            0
+                        \end{bmatrix} \text{ or }
+                        \begin{bmatrix}
+                            1\\
+                            0\\
+                            0
+                        \end{bmatrix}\\
+                        c_0 & \text{if } a =\begin{bmatrix}
+                            0\\
+                            0\\
+                            1
+                        \end{bmatrix},
+                    \end{cases}
+                \]
+                M recognize $B^R$, then $B$ is regular.  $\square$
+        
+            \end{enumerate}
+        \item[8.]
+        
+        \begin{enumerate}
+    \item[(a)] \textbf{Prove that \( L^R = \{ w^R \mid w \in L \} \) (the reverse language) is regular by constructing a DFA that accepts \( L^R \).}
+
+    \textbf{Proof:}
+
+    To prove that \( L^R \) is regular, we need to construct a DFA that accepts \( L^R \). Recall that \( L^R \) is the set of strings obtained by reversing the strings in \( L \). Since \( L \) is regular, it is accepted by a DFA \( A = (Q, \Sigma, \delta, q_0, F) \).
+
+    The main idea is to reverse the transitions and start from the accepting states in \( A \), effectively building a new DFA that recognizes \( L^R \).
+
+    We will construct a new DFA \( A^R = (Q^R, \Sigma, \delta^R, q_0^R, F^R) \), where:
+    
+    \begin{itemize}
+        \item \( Q^R = Q \), i.e., the states remain the same.
+        \item The alphabet \( \Sigma \) also remains the same.
+        \item \( \delta^R \) is the reversed transition function, which is constructed as follows:
+        \[
+        \delta^R(q, a) = \{ q' \mid \delta(q', a) = q \}
+        \]
+        That is, for each state \( q \) and input symbol \( a \), \( \delta^R \) gives the set of states \( q' \) such that \( q' \) transitions to \( q \) under \( a \) in the original DFA.
+        \item \( q_0^R \) is any state from \( F \), since any accepting state in \( A \) can serve as a start state in \( A^R \).
+        \item \( F^R = \{q_0\} \), since the start state of \( A \) becomes an accepting state in \( A^R \).
+    \end{itemize}
+    
+    This construction ensures that \( A^R \) accepts the reverse of any string accepted by \( A \), proving that \( L^R \) is regular.
+
+    \vspace{1em}
+    
+    \item[(b)] \textbf{Prove that \( L^* \) (the Kleene star) is regular by constructing a DFA that accepts \( L^* \).}
+
+    \textbf{Proof:}
+
+    To prove that \( L^* \) is regular, we need to construct a DFA that accepts \( L^* \). Recall that the Kleene star operation on a language \( L \) generates the set of all finite strings that can be formed by concatenating zero or more strings from \( L \).
+
+    Let \( L \) be a regular language accepted by a DFA \( A = (Q, \Sigma, \delta, q_0, F) \). We will construct a new DFA \( A^* = (Q^*, \Sigma, \delta^*, q_0^*, F^*) \) that accepts \( L^* \).
+
+    \begin{itemize}
+        \item \( Q^* = Q \cup \{q_{\text{new}}\} \), where \( q_{\text{new}} \) is a new start state.
+        \item \( \Sigma \) remains the same.
+        \item \( \delta^* \) is the new transition function. It is defined as follows:
+        \[
+        \delta^*(q, a) = \delta(q, a) \quad \text{for} \quad q \in Q, \quad a \in \Sigma
+        \]
+        Additionally, for the new state \( q_{\text{new}} \), we define:
+        \[
+        \delta^*(q_{\text{new}}, \epsilon) = q_0
+        \]
+        where \( \epsilon \) represents the empty string. This ensures that the DFA can start in \( q_{\text{new}} \) and transition to \( q_0 \) without reading any input symbol, which is needed for accepting the empty string.
+        \item \( q_0^* = q_{\text{new}} \), since the new start state is the only state that can accept the empty string.
+        \item \( F^* = F \cup \{q_{\text{new}}\} \), since \( q_{\text{new}} \) should also be an accepting state to accept the empty string, and all accepting states of \( A \) should remain accepting in \( A^* \).
+    \end{itemize}
+
+    This construction ensures that \( A^* \) accepts all strings that can be formed by concatenating zero or more strings from \( L \), proving that \( L^* \) is regular.
+
+\end{enumerate}
+
+        \item[9.]
+
+        \begin{enumerate}
+
+\item[(a)] \textbf{ DFA for \( A_k \)}
+
+\textbf{Formal Definition:}  
+The DFA is a 5-tuple \( M = (Q, \Sigma, \delta, q_0, F) \), where:
+\begin{itemize}
+    \item \( Q = \{q_0, q_1, q_2, \ldots, q_k, q_{acc}\} \), with:
+    \begin{itemize}
+        \item \( q_0 \): Initial state.
+        \item \( q_1, q_2, \ldots, q_k \): States to track modulo \( k+1 \).
+        \item \( q_{acc} \): Accept state.
+    \end{itemize}
+    \item \( \Sigma = \{a, b\} \): Input alphabet.
+    \item \( \delta \): Transition function defined below.
+    \item \( q_0 \): Start state.
+    \item \( F = \{q_{acc}\} \): Set of accept states.
+\end{itemize}
+
+\textbf{Transition Function (\( \delta \)):}  
+1. From \( q_0 \):
+   \[
+   \delta(q_0, a) = q_1, \quad \delta(q_0, b) = q_0.
+   \]
+2. From \( q_i \) (for \( 1 \leq i < k \)):
+   \[
+   \delta(q_i, a) = q_1, \quad \delta(q_i, b) = q_{i+1}.
+   \]
+3. From \( q_k \):
+   \[
+   \delta(q_k, a) = q_1, \quad \delta(q_k, b) = q_{acc}.
+   \]
+4. From \( q_{acc} \):
+   \[
+   \delta(q_{acc}, a) = q_{acc}, \quad \delta(q_{acc}, b) = q_{acc}.
+   \]
+
+\textbf{Explanation:}  
+The DFA tracks when \( a \) appears and checks for a \( b \) exactly \( k \) steps later by transitioning through states \( q_1, q_2, \ldots, q_k \). If the pattern is found, it moves to \( q_{acc} \), where it accepts.
+
+---
+
+\item[b] \textbf{ Proof of Correctness for \( k = 2 \)}
+
+For \( k = 2 \), the DFA is:
+- \( Q = \{q_0, q_1, q_2, q_{acc}\} \).
+- Transitions:
+  \[
+  \delta(q_0, a) = q_1, \quad \delta(q_0, b) = q_0.
+  \]
+  \[
+  \delta(q_1, a) = q_1, \quad \delta(q_1, b) = q_2.
+  \]
+  \[
+  \delta(q_2, a) = q_1, \quad \delta(q_2, b) = q_{acc}.
+  \]
+  \[
+  \delta(q_{acc}, a) = q_{acc}, \quad \delta(q_{acc}, b) = q_{acc}.
+  \]
+
+\textbf{Proof:}
+1. If \( w \in A_2 \), there exists an index \( i \) such that \( w[i] = a \) and \( w[i+2] = b \). The DFA transitions:
+   - From \( q_0 \) to \( q_1 \) on \( w[i] = a \).
+   - To \( q_2 \) on \( w[i+1] = b \).
+   - To \( q_{acc} \) on \( w[i+2] = b \).
+   Thus, \( w \) is accepted.
+
+2. If \( w \notin A_2 \), no such indices \( i \) and \( i+2 \) exist. The DFA never reaches \( q_{acc} \).
+
+---
+
+\item[(c)] \textbf{ NFA for \( A_2 \) with at most 4 states}
+
+\textbf{Formal Definition:}  
+The NFA is \( M = (Q, \Sigma, \delta, q_0, F) \), where:
+\begin{itemize}
+    \item \( Q = \{q_0, q_1, q_{acc}\} \).
+    \item \( \Sigma = \{a, b\} \).
+    \item \( \delta \):
+    \[
+    \delta(q_0, a) = \{q_1\}, \quad \delta(q_1, b) = \{q_1, q_{acc}\}.
+    \]
+    \item \( q_0 \): Start state.
+    \item \( F = \{q_{acc}\} \): Accept state.
+\end{itemize}
+
+\textbf{Explanation:}  
+The NFA uses nondeterminism to guess the positions \( i \) and \( i+2 \) where \( w[i] = a \) and \( w[i+2] = b \). The transition \( q_1 \to q_{acc} \) occurs when \( b \) is found at the right position.
+
+---
+
+\item[(d)] \textbf{ Proof that any DFA for \( A_2 \) has at least 5 states}
+
+\textbf{Proof:}
+1. A DFA must distinguish substrings of \( \{a, b\}^* \) modulo \( k+1 = 3 \).
+2. For \( k = 2 \), the DFA must:
+   - Track the remainder modulo 3 of the position.
+   - Remember whether \( a \) was seen.
+   - Check if \( b \) appears \( k \) steps later.
+
+3. The minimum number of states is \( 2 \times 3 = 6 \), but the start state collapses one case, requiring \( 5 \) states.
+
+\end{enumerate}
+            
+        \item[10.] \textbf{\textit{Problems 1.54-56 from Sipser}}
+            \begin{enumerate}
+                \item[(a)]Let $\sum = \{a, b\}$. For each $k \geq 1$, let Ck be the language consisting of all strings that contain an a exactly k places from the right hand end. Thus $C_k = \sum^* a\sum^{k-1}$. Describe an NFA with $k + 1$ states that recognizes Ck in terms of both a state diagram and a formal description.
+                
+                \textbf{Solution:}\newline
+
+                Let \textit{N} be the NFA with $k+1$ states that recognizes $C_k$.The state diagram of NFA N is follows:
+
+               \begin{tikzpicture}[node distance={15mm}, thick, main/.style = {draw, circle}] 
+                    \node[main] (0) {$q_0$}; 
+                    \node[main] (1) [ right of=0] {$q_1$}; 
+                    \node[main] (2) [ right of=1] {$q_2$}; 
+                    \node[main] (i) [ right of=2] {$q_i$};
+                    \node[main] (k) [double, right of=i] {$q_k$}; 
+                    \draw[->] (0) -- node[above] {a} (1); 
+                    \draw[->] (1) -- node[above] {a,b} (2); 
+                    \draw[->] (2) -- node[above] {a,b} (i); 
+                    \draw[->] (i) -- node[above] {a,b} (k); 
+                    \draw[->] (0) edge [loop above] node {a,b} (); 
+              \end{tikzpicture}\newline
+
+              The formal description if NFA N is as follows:\newline
+                \[
+                    N=(Q,\sum,\delta,q_0,F),
+                    Q = \{q_0,q_1,...,q_k\},
+                    \sum=\{a,b\},
+                    q_0=\{q_0\},
+                    F=\{q_k\},
+                \]
+                
+
+                \[
+                    \delta(q_i,a)=
+                    \begin{cases}
+                        {q_0,q_1} & \text{if } i=0 \\
+                        {q_{i+1}} & \text{if } 0<i<k \\
+                        \emptyset & \text{if } i=k \\
+                    \end{cases}
+                \]
+
+
+                \[
+                    \delta(q_i,b)=
+                    \begin{cases}
+                        {q_0} & \text{if } i=0 \\
+                        {q_{i+1}} & \text{if } 0<i<k \\
+                        \emptyset & \text{if } i=k \\
+                    \end{cases}
+                \]
+
+                \[\delta(q_i,\epsilon) = \emptyset \text{, } \forall i\]
+
+                \item[(b)]Consider the languages $C_k$ defined in part (a). Prove that for each k, no DFA can recognize $C_k$ with fewer than $2^k$ states.
+                
+                \textbf{Solution:}
+
+              
+                Consider the language $C_k =\sum^*a\sum^{k-1}$ for each $k\geq1$. over the alphabet $\sum=\{a,b\}$. C, be the language consisting of all strings that contain an 'a' exactly k places from the right-hand end.
+
+                Now it is required to prove that, no DFA (Deterministic finite automation) can recognize $C_k$, with fewer than $2^k$ states.
+                If a DFA enters two different states after reading two different strings $Iz$ and $mz$ with same suffix z, then the DFA enters two different states after reading the strings $I$ and $m$. Take two different strings of length $k$ such that $I=I_1,...,I_k$ and $m=m_1,...,m_k$. Let i be some position such that $I_i\neq m_i$. One of the strings contains a in its $i^{th}$ position and the other string contains b in its $i^{th}$ position.
+                Consider the suffix string $z = b^{i-1}$. In this case, either the string $Iz$ or $mz$ has the $k^{th}$ bit from the end as a. The total number of strings of length k over the input alphabet $\{a,b\}$ is $2^k$. Thus, the DFA needs $2^k$ states in order to distinguish $2^k$ strings.
+                Therefore, the DFA that recognizes the language $C_k$, has at least $2^k$ states.
+                $\square$
+
+                \item[(c)]Let $\sum = \{a,b\}$. For each $k\geq1$, let $D_k$ be the language consisting for all string that have at least ano a among the last k symbols. Thus $D_k = \sum^*a(\sum\cup\epsilon)^{k-1}$. Describe a DFA with a most $k+1$ states that recognizes $D_k$ in terms of both a state diagram and a formal description.
+
+                \textbf{Solution:}
+                The Language $D_k=\sum^*a(\sum\cup\epsilon)^{k-1}$ for each $k\geq1$, over the alphabet $\sum=\{a,b\}$. Here, $D_k$ is the language consisting for all strings that have at least one $a$ among the last $k$ symbols. The DFA that recognizes the language $D_k$.
+
+                The construction of $M$ where $M=(Q_k,\sum,\delta,q_0,F)$ is as follows:
+
+                \[
+                    Q_k=\{q_0,q_1,...,q_k\},\\
+                    \sum=\{a,b\},\\
+                    q_0=\{q_0\},\\
+                    F=\{q_1,q_2,...,q_k\}\\
+                \]
+                \[\delta_k(q,I)=
+                \begin{cases}
+                    q_1 & i = 0 \wedge I=a\\
+                    q_0 & i = 0 \wedge I=b\\
+                    q_1 & i \neq 0 \wedge I=a\\
+                    q_{(i+1)\mod k} & i \neq 0 \wedge I=b\\
+                \end{cases}
+                \]
+
+                \begin{tikzpicture}[node distance={15mm}, thick, main/.style = {draw, circle}] 
+                    \node[main] (0) {$q_0$}; 
+                    \node[main] (1) [double, right of=0] {$q_1$}; 
+                    \node[main] (2) [double, right of=1] {$q_2$}; 
+                    \node[main] (i) [double, right of=2] {$q_i$};
+                    \node[main] (k-1) [double, right of=i] {$q_{k-1}$}; 
+                    \node[main] (k) [double, right of=k-1] {$q_k$}; 
+                    \draw[->] (0) -- node[above] {a} (1); 
+                    \draw[->] (1) -- node[above] {a,b} (2); 
+                    \draw[->] (2) -- node[above] {a,b} (i); 
+                    \draw[->] (i) -- node[above] {a,b} (k-1);
+                    \draw[->] (k-1) -- node[above] {a,b} (k); 
+                    \draw[->] (k-1) -- node[above] {a,b} (k); 
+                    \draw[->] (0) edge [loop above] node {b} (); 
+                    \draw[->, out=10, in=60, looseness=1] (k) to node[above] {b} (0);
+                    \draw[->, out=-10, in=-60, looseness=1] (k) to node[above] {a} (1);
+              \end{tikzpicture}\newline
+                
+            \end{enumerate}
+
+
+       
+        \item[12.] \textbf{Cardinality of $\sum^*$}
+            \begin{enumerate}
+                \item[(a)] Let $\sum = {a_1,a_2,...,a_k}$. Verify that the function $f:\sum \to \mathbb{N}$ is a biyection:
+
+                    \[
+                        f(a_{i_1},a_{i_2},...a_{i_n}) = i_1k^{n-1}+i_2k^{n-2}+...+i_{n-1}k+i_n
+                    \]
+
+                $f(\epsilon)=0$
+                
+                \textbf{Solution:}\newline
+
+                To prove that f is a biyection there are definitions that we must have present:\newline
+                
+                \textit{Definition: }Let $a/b$ with $a,b \in \mathbb{N}$ we define floor function of $a/b$ as:
+                    
+                    \[
+                        \lfloor{a/b}\rfloor=c \iff a = bc + r \text{  with  } 0\leq r \leq b
+                    \]
+
+                \textit{Definition: }We define the function $\theta: \mathbb{N} \to \sum$ as $\theta(i) = a_i, \forall i \in \mathbb{N}$\newline
+
+                 \textit{Definition: }We define the function $h: \mathbb{N} \to \mathbb{N}$ as:\newline 
+
+                    \[  h(x)
+                        \begin{cases}
+                            0 & \text{for }  x \mod k = 0\\
+                            1 + h(\lfloor{x/k}\rfloor) & \text{for } x \mod k \neq 1 \\
+                        \end{cases}
+                    \]
+
+                    The function $h(x)$, is the length of the string $g(x)$.\newline
+
+                Let $g:\sum \to \mathbb{N}$ as:
+
+                    \[  g(x)
+                        \begin{cases}
+                            \epsilon &\text{ for } k = 0\\
+                            w \text{ such that } |w| = x &\text{ for } k=1 \\
+                            \prod_{l=1}^{h(x)}\theta(\lfloor{\frac{x}{k^{h(x)-l}}}\rfloor)\mod k &\text{ for } k>1\
+                        \end{cases}
+                    \]
+
+                We will show that $f \circ g =  \mathrm{id} = g \circ f$ (The cases k=0 and k=1 are trivials):\newline
+
+                Let $x = a_{i_1}a_{i_2}...a_{i_n}$
+                
+                \[
+                    g(f(x)) = \prod_{l=1}^{h(f(x))}\theta(\lfloor{\sum_{j=1}^n{i_jk^{n-1}}/k^{h(f(x))-l}}\rfloor \mod k) =  \]
+                \[  
+                \theta(\lfloor{\frac{\sum_{j=1}^n{i_jk^{n-1}}}{k^{n-1}}}\rfloor \mod k)
+                \theta(\lfloor{\frac{\sum_{j=1}^n{i_jk^{n-1}}}{k^{n-2}}}\rfloor \mod k)...\]
+                \[\theta(\lfloor{\frac{\sum_{j=1}^n{i_jk^{n-1}}}{k^{n-(n-1)}}}\rfloor \mod k)\theta(\lfloor{\frac{\sum_{j=1}^n{i_jk^{n-1}}}{k^{n-n}}}\rfloor \mod k) =
+                \]
+                \[
+                \theta(\lfloor{\frac{i_1k^{n-1}+i_2k^{n-2}+...+i_{n-1}k+i_n}{k^{n-1}}}\rfloor \mod k)
+                \]
+                \[
+                \theta(\lfloor{\frac{i_1k^{n-1}+i_2k^{n-2}+...+i_{n-1}k+i_n}{k^{n-2}}}\rfloor \mod k)
+                \]...
+                \[
+                \theta(\lfloor{\frac{i_1k^{n-1}+i_2k^{n-2}+...+i_{n-1}k+i_n}{k^{n-(n-1)}}}\rfloor \mod k)
+                \]
+                \[
+                \theta(\lfloor{\frac{i_1k^{n-1}+i_2k^{n-2}+...+i_{n-1}k+i_n}{k^{n-n}}}\rfloor \mod k) =
+                \]
+                \[
+                \theta(\lfloor{(i_1) + \frac{i_2}{k}+...+\frac{i_{n-1}}{k^{n-2}}+\frac{i_n}{k^{n-1}}}\rfloor \mod k)
+                \]
+                \[
+               \theta(\lfloor{(i_1k + i_2) + \frac{i_3{}}{k}+...+\frac{i_{n-1}}{k^{n-3}} +\frac{i_n}{k^{n-2}}}\rfloor \mod k)
+                \]
+                ...
+                \[
+                \theta(\lfloor{(i_1k^{n-2} + i_2k^{n-3} + ... )+i_{n-1} +\frac{i_n}{k}}\rfloor \mod k)
+                \]
+                \[
+                \theta(\lfloor{(i_1k^{n-1} + i_2k^{n-2} + ... +i_{n-1}k) +i_n}\rfloor \mod k) =
+                \]
+                \[ \theta(i_1)\theta(i_2)...\theta(i_{n-1})\theta(i_n)  = a_{i_1}a_{i_2}...a{i_{n-1}}a{i_n}\].
+
+
+                Let $x = i_1k^{n-1} + i_2k^{n-2} + ... + i_{n-1}k + i_n$
+          
+                \[
+                    f(g(x)) = f(\prod_{l=1}^{h(x)}\theta(\lfloor{\frac{x}{k^{h(x)-l}}}\rfloor \mod k)) = \sum_{j=1}^{h(x)}(\lfloor{\frac{x}{k^{h(x)-j}}}\rfloor) \mod k) k^{h(x)-j} =
+                \]
+                \[
+                    \sum_{j=1}^{n}(\lfloor{\frac{x}{k^{n-j}}}\rfloor \mod k) k^{n-j}  = i_1k^{n-1} + i_2k^{n-2} + ... + i_{n-1}k + i_n = x
+                \]
+
+                How $f(g(x))=x=g(f(x))$ then f is a bijection.
+                $\square$
+              
+                \item[(b)]Why being countable does not imply that the set of strings over a countable alphabet is countable
+
+Let \( \Sigma \) be a countable alphabet, meaning that the set of symbols in \( \Sigma \) is either finite or countably infinite. For example, \( \Sigma = \{0, 1\} \) is a finite alphabet, and \( \Sigma = \mathbb{N} \) is a countably infinite alphabet.
+
+However, the set of all possible strings over \( \Sigma \), denoted \( \Sigma^* \), is \textit{not necessarily countable} even if \( \Sigma \) is countable. This is because:
+
+\begin{enumerate}
+    \item \textbf{Finite strings:} The set of finite-length strings over a countable alphabet \( \Sigma \) (i.e., \( \Sigma^* \)) is the union of sets of strings of all possible finite lengths.
+    \item \textbf{Countably infinite alphabets:} If the alphabet \( \Sigma \) is infinite, the number of possible strings grows exponentially. The total number of finite-length strings over an infinite alphabet is uncountably infinite, because each string is a sequence that can be independently chosen from the countably infinite set of symbols, leading to a higher cardinality.
+    \item \textbf{Uncountable cardinality:} The set \( \Sigma^* \) of all finite-length strings over a countably infinite alphabet is in fact uncountable. This can be shown by a diagonalization argument, which demonstrates that no countable list can contain all possible strings, even when considering only finite-length strings.
+\end{enumerate}
+
+Thus, \textbf{even if the alphabet is countable, the set of strings over that alphabet may be uncountable}. This shows that being countable does not imply that the set of strings over it will also be countable.
+
+            \end{enumerate}
+    \end{enumerate}
+
+
+\end{document}

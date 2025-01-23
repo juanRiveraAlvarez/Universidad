@@ -1,0 +1,7 @@
+Diego-Palacio 34568910 50109774 _   No se requiere el material
+Juan-Perez 24567898 50234573 _   No
+Juan-Perez 24567898 50234573 _   
+Juan-Perez 24567898 2 _   
+Diego-Palacio 34568910 50109774 _   No lo  deseo
+Diego-Palacio 34568910 50109773 _   No se usa
+Albert 123 123 _   No lo quiero
