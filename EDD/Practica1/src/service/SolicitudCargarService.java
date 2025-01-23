@@ -49,13 +49,16 @@ public class SolicitudCargarService{
     inventarioGeneralRepository.save(new InventarioGeneralDto(((Usuario)this.empleadoRepository.loadById(idUsuario)).getNombre(), idUsuario, equipoRepository.loadById(idEquipo)));
     solicitudCargarRepository.deleteById(idUsuario, idEquipo);
     notificacionesRepository.save(new NotificacionDto(idUsuario, idEquipo, "Aprobada"));
+    inventarioGeneralRepository.ordenar();
   }
   
   public void denegarSolicitud(long idUsuario, long idEquipo){
     SolicitudCargarRepository solicitudCargarRepository = new SolicitudCargarRepository();
     NotificacionesRepository notificacionesRepository = new NotificacionesRepository();
+    InventarioGeneralRepository inventarioGeneralRepository = new InventarioGeneralRepository();
     solicitudCargarRepository.deleteById(idUsuario, idEquipo);
     notificacionesRepository.save(new NotificacionDto(idUsuario, idEquipo, "Denegada"));
+    inventarioGeneralRepository.ordenar();
   }
 
 }

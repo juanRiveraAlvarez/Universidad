@@ -49,13 +49,16 @@ public class SolicitudEliminarService{
     inventarioGeneralRepository.deleteById(idUsuario, idEquipo);
     solicitudEliminarRepository.deleteById(idUsuario, idEquipo);
     notificacionesRepository.save(new NotificacionDto(idUsuario, idEquipo, "Aprobada"));
+    inventarioGeneralRepository.ordenar();
   }
   
   public void denegarSolicitud(long idUsuario, long idEquipo){
     SolicitudEliminarRepository solicitudEliminarRepository = new SolicitudEliminarRepository();
     NotificacionesRepository notificacionesRepository = new NotificacionesRepository();
+    InventarioGeneralRepository inventarioGeneralRepository = new InventarioGeneralRepository();
     solicitudEliminarRepository.deleteById(idUsuario, idEquipo);
     notificacionesRepository.save(new NotificacionDto(idUsuario, idEquipo, "Denegada"));
+    inventarioGeneralRepository.ordenar();
   }
 
 }

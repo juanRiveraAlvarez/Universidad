@@ -114,4 +114,99 @@ public class InventarioGeneralRepository{
   }
 
 
+  public void ordenar() {
+    NodoDoble cabeza = this.registros.getHead();
+      try{
+        this.fileWriter = new FileWriter(this.ruta,false);
+      }catch(IOException e){
+        System.out.println(e);
+      }
+      if (this.registros.getHead() != null && this.registros.getHead().getNext() != null) {
+            this.registros.setHead(mergeSortRec(this.registros.getHead()));
+            NodoDoble tail = this.registros.getHead();
+            while (tail.getNext() != null) {
+                tail = tail.getNext();
+            }
+            this.registros.setTail(tail);
+        }
+    cabeza = this.registros.getHead();
+    int nodos = this.registros.getSize();
+    for(int i = 0; i<nodos; i++){
+      this.save((InventarioGeneralDto)cabeza.getData());
+      cabeza = cabeza.getNext();
+    }
+
+    }
+
+    private NodoDoble mergeSortRec(NodoDoble head) {
+        if (head == null || head.getNext() == null) {
+            return head;
+        }
+
+        NodoDoble middle = getMiddle(head);
+        NodoDoble nextToMiddle = middle.getNext();
+
+        middle.setNext(null);
+        if (nextToMiddle != null) {
+            nextToMiddle.setPrev(null);
+        }
+
+        NodoDoble left = mergeSortRec(head);
+        NodoDoble right = mergeSortRec(nextToMiddle);
+
+        return merge(left, right);
+    }
+
+    private NodoDoble merge(NodoDoble left, NodoDoble right) {
+        NodoDoble sorted = new NodoDoble(null);
+        NodoDoble current = sorted;
+
+        while (left != null && right != null) {
+            if (((InventarioGeneralDto) left.getData()).getEquipo().getId() <= ((InventarioGeneralDto) right.getData()).getEquipo().getId()) {
+                current.setNext(left);
+                left.setPrev(current);
+                left = left.getNext();
+            } else {
+                current.setNext(right);
+                right.setPrev(current);
+                right = right.getNext();
+            }
+            current = current.getNext();
+        }
+
+        while (left != null) {
+            current.setNext(left);
+            left.setPrev(current);
+            left = left.getNext();
+            current = current.getNext();
+        }
+
+        while (right != null) {
+            current.setNext(right);
+            right.setPrev(current);
+            right = right.getNext();
+            current = current.getNext();
+        }
+
+        sorted.getNext().setPrev(null);
+        return sorted.getNext();
+    }
+
+    private NodoDoble getMiddle(NodoDoble head) {
+        if (head == null) {
+            return head;
+        }
+
+        NodoDoble slow = head;
+        NodoDoble fast = head;
+
+        while (fast.getNext() != null && fast.getNext().getNext() != null) {
+            slow = slow.getNext();
+            fast = fast.getNext().getNext();
+        }
+
+        return slow;
+    }
+
+
 }
