@@ -140,7 +140,7 @@ public class BinaryTree<T>{
     }
     this.size--;
   }
-
+/*
   public static void main(String[] args){
     Nodo A = new Nodo<String>("A");
     Nodo B = new Nodo<String>("B");
@@ -149,7 +149,6 @@ public class BinaryTree<T>{
     Nodo E = new Nodo<String>("E");
     Nodo F = new Nodo<String>("F");
     Nodo G = new Nodo<String>("G");
-/*
     A.setIzquierdo(B);
 
     A.setDerecho(C);
@@ -157,7 +156,6 @@ public class BinaryTree<T>{
     B.setDerecho(E);
     C.setIzquierdo(F);
     C.setDerecho(G);
-    */
 
     BinaryTree binaryTree = new BinaryTree<String>();
 
@@ -177,5 +175,6 @@ public class BinaryTree<T>{
     binaryTree.remove(binaryTree.root().getIzquierdo().getIzquierdo());
     System.out.println(binaryTree.size());
   }
+*/
 
 }
