@@ -9,7 +9,6 @@ class Programa2{
       
       File file = new File("test_pr2.txt");
       Scanner sc = new Scanner(file);
-
       int acum  = 0;
 
       while(sc.hasNextLine()){

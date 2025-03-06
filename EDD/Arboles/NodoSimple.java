@@ -19,11 +19,11 @@ public class NodoSimple<T>{
     return this.data;
   }
 
-  public void setNext(NodoSimple next){
+  public void setNext(NodoSimple<T> next){
     this.next = next;
   }
 
-  public NodoSimple getNext(){
+  public NodoSimple<T> getNext(){
     return this.next;
   }
 

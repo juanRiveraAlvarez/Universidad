@@ -1,0 +1,40 @@
+Resumen del Algoritmo de Dijkstra (Implementacion sin PriorityQueue)
+
+Objetivo:
+Encontrar el camino mas corto entre dos ciudades en un grafo ponderado, minimizando distancia o tiempo.
+
+Pasos del Algoritmo:
+
+1. Inicializacion:
+   - Se crea un mapa distances con valores infinito (Integer.MAX_VALUE) para todas las ciudades, excepto la ciudad de inicio, que se pone en 0.
+   - Se agrega la ciudad de inicio a la lista queue, que actuara como una cola de prioridad manual.
+
+2. Mientras queue no este vacia:
+   - Buscar en queue la ciudad con la menor distancia y eliminarla (simula poll() de PriorityQueue).
+   - Actualizar las distancias de sus ciudades vecinas si encontramos un camino mas corto.
+   - Agregar las ciudades vecinas a queue si no estan ya en la lista.
+
+3. Finalizacion:
+   - Cuando se procesa la ciudad destino (end), se devuelve su distancia minima.
+   - Si queue se vacia sin llegar a end, significa que no hay conexion y se devuelve -1.
+
+Ejemplo Paso a Paso:
+
+Grafo (Ciudades y Distancias):
+Bogota --(400km)--> Medellin  
+Bogota --(700km)--> Cali  
+Medellin --(300km)--> Cali  
+
+Ejecucion de dijkstra("Bogota", "Cali", true):
+
+Iteracion | queue            | Distancias (Bogota, Medellin, Cali) | Ciudad Procesada
+--------- | ------------------ | ----------------------------------- | ----------------
+Inicial   | [Bogota]         | 0, inf, inf                         | -                
+1         | [Medellin, Cali] | 0, 400, 700                         | Bogota           
+2         | [Cali]           | 0, 400, 700                         | Medellin         
+3         | []               | 0, 400, 700                         | Cali             
+
+Resultado: La distancia mas corta de Bogota a Cali es 700 km.
+
+
+
